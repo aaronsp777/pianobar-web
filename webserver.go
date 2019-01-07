@@ -4,12 +4,30 @@ import (
 	"flag"
 	"fmt"
 	"net/http"
+	"os"
 )
 
 var bind_addr = flag.String("bind_addr", ":8000", "Host/Port to listen on")
+var piano_ctl = flag.String("piano_ctl", "/home/pi/.config/pianobar/ctl", "Pianobar fifo")
 
 func doAction(a string) error {
 	fmt.Println("action:", a)
+	f, err := os.OpenFile(*piano_ctl, os.O_WRONLY, 0644)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	if a == "play" {
+		f.WriteString("P")
+	} else if a == "pause" {
+		f.WriteString("S")
+	} else if a == "next" {
+		f.WriteString("n")
+	} else {
+		fmt.Println("unknown aciton:", a)
+	}
+
 	return nil
 }
 
