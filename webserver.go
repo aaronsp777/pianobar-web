@@ -24,6 +24,12 @@ func doAction(a string) error {
 		f.WriteString("S")
 	} else if a == "next" {
 		f.WriteString("n")
+	} else if a == "voldown" {
+		f.WriteString("(")
+	} else if a == "volreset" {
+		f.WriteString("^")
+	} else if a == "volup" {
+		f.WriteString(")")
 	} else {
 		fmt.Println("unknown aciton:", a)
 	}
@@ -38,6 +44,9 @@ func topHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "<body>")
 	fmt.Fprintln(w, "<meta name='viewport' content='width=device-width, initial-scale=1.0'>")
 	fmt.Fprintln(w, "<form action='/action/' method='get'>")
+	fmt.Fprintln(w, "  <input type='submit' name='action' value='voldown' class='voldown'>")
+	fmt.Fprintln(w, "  <input type='submit' name='action' value='volreset' class='volreset'>")
+	fmt.Fprintln(w, "  <input type='submit' name='action' value='volup' class='volup'>")
 	fmt.Fprintln(w, "  <input type='submit' name='action' value='pause' class='pause'>")
 	fmt.Fprintln(w, "  <input type='submit' name='action' value='play' class='play'>")
 	fmt.Fprintln(w, "  <input type='submit' name='action' value='next' class='next'>")
