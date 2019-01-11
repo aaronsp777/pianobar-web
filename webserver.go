@@ -10,28 +10,28 @@ import (
 var bind_addr = flag.String("bind_addr", ":8000", "Host/Port to listen on")
 var piano_ctl = flag.String("piano_ctl", "/home/pi/.config/pianobar/ctl", "Pianobar fifo")
 
-func doAction(a string) error {
-	fmt.Println("action:", a)
+var actionMap = map[string]string{
+	"play":     "P",
+	"pause":    "S",
+	"next":     "n",
+	"voldown":  "(",
+	"volreset": "^",
+	"volup":    ")",
+}
+
+func doAction(action string) error {
+	fmt.Println("action:", action)
 	f, err := os.OpenFile(*piano_ctl, os.O_WRONLY, 0644)
 	if err != nil {
 		return err
 	}
 	defer f.Close()
 
-	if a == "play" {
-		f.WriteString("P")
-	} else if a == "pause" {
-		f.WriteString("S")
-	} else if a == "next" {
-		f.WriteString("n")
-	} else if a == "voldown" {
-		f.WriteString("(")
-	} else if a == "volreset" {
-		f.WriteString("^")
-	} else if a == "volup" {
-		f.WriteString(")")
+	cmd, ok := actionMap[action]
+	if ok {
+		f.WriteString(cmd)
 	} else {
-		fmt.Println("unknown aciton:", a)
+		fmt.Println("unknown aciton:", action)
 	}
 
 	return nil
