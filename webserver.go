@@ -34,7 +34,9 @@ func doAction(a string) error {
 func topHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
 	fmt.Fprintln(w, "<!DOCTYPE html>")
-	fmt.Fprintln(w, "<html><body>")
+	fmt.Fprintln(w, "<html>")
+	fmt.Fprintln(w, "<body>")
+	fmt.Fprintln(w, "<meta name='viewport' content='width=device-width, initial-scale=1.0'>")
 	fmt.Fprintln(w, "<form action='/action/' method='get'>")
 	fmt.Fprintln(w, "  <input type='submit' name='action' value='pause' class='pause'>")
 	fmt.Fprintln(w, "  <input type='submit' name='action' value='play' class='play'>")
