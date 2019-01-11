@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"html/template"
 	"net/http"
 	"os"
 )
@@ -37,22 +38,10 @@ func doAction(action string) error {
 	return nil
 }
 
+var topTemplate = template.Must(template.ParseFiles("top.html"))
+
 func topHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html")
-	fmt.Fprintln(w, "<!DOCTYPE html>")
-	fmt.Fprintln(w, "<html>")
-	fmt.Fprintln(w, "<body>")
-	fmt.Fprintln(w, "<meta name='viewport' content='width=device-width, initial-scale=1.0'>")
-	fmt.Fprintln(w, "<form action='/action/' method='get'>")
-	fmt.Fprintln(w, "  <input type='submit' name='action' value='voldown' class='voldown'>")
-	fmt.Fprintln(w, "  <input type='submit' name='action' value='volreset' class='volreset'>")
-	fmt.Fprintln(w, "  <input type='submit' name='action' value='volup' class='volup'>")
-	fmt.Fprintln(w, "  <input type='submit' name='action' value='pause' class='pause'>")
-	fmt.Fprintln(w, "  <input type='submit' name='action' value='play' class='play'>")
-	fmt.Fprintln(w, "  <input type='submit' name='action' value='next' class='next'>")
-	fmt.Fprintln(w, "</form>")
-	fmt.Fprintln(w, "</body>")
-	fmt.Fprintln(w, "</html>")
+	topTemplate.Execute(w, "")
 }
 
 func actionHandler(w http.ResponseWriter, r *http.Request) {
